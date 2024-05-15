@@ -2,7 +2,7 @@
 const HttpError = require('../models/http-error');
 const uuid = require('uuid');
 
-const DUMMY_PLACES = [
+let DUMMY_PLACES = [
     {
         id: 'p1',
         title: 'Rotonda',
@@ -46,7 +46,7 @@ const getPlacesByUsers = (req, res, next)=>{
     res.json({places});
 };
 
-const postPlaces = (req, res, next)=>{
+const savePlace = (req, res, next)=>{
     const {title, creator} = req.body;
     const createdPlace = {
         id: uuid.v4(),
@@ -58,7 +58,7 @@ const postPlaces = (req, res, next)=>{
     res.json({places});
 };
 //updatePlaces = Patch
-const updatePlaces = (req,res,next)=>{
+const updatePlace = (req,res,next)=>{
     const {title} = req.body;
     const placeId= req.params.pid;
     console.log(placeId);
@@ -69,8 +69,15 @@ const updatePlaces = (req,res,next)=>{
     res.status(200).json({place : updatedPlace});    
 };
 
+const deletePlace = (req, res, next) => {
+    const placeId = req.params.pid;
+    DUMMY_PLACES = DUMMY_PLACES.filter (p => p.id !== placeId)
+    res.status(200).json({message: 'Lugar Borrado'});
+};
+
 exports.getAllPlaces = getAllPlaces;
 exports.getPlacesById = getPlacesById;
 exports.getPlacesByUsers = getPlacesByUsers;
-exports.postPlaces = postPlaces;
-exports.updatePlaces = updatePlaces;
+exports.savePlace = savePlace;
+exports.updatePlace = updatePlace;
+exports.deletePlace = deletePlace;
